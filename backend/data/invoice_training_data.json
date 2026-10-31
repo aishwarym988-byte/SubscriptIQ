@@ -1,0 +1,33 @@
+{
+  "as_of_date": "2026-10-31",
+  "invoices": [
+    {
+      "id": 1,
+      "due_date": "2026-10-08",
+      "total": "1768.82",
+      "status": "paid",
+      "successful_payment_amount": "1768.82"
+    },
+    {
+      "id": 2,
+      "due_date": "2026-10-17",
+      "total": "588.82",
+      "status": "unpaid",
+      "successful_payment_amount": "300.00"
+    },
+    {
+      "id": 3,
+      "due_date": "2026-10-22",
+      "total": "2948.82",
+      "status": "overdue",
+      "successful_payment_amount": "1000.00"
+    },
+    {
+      "id": 4,
+      "due_date": "2026-11-08",
+      "total": "1768.82",
+      "status": "unpaid",
+      "successful_payment_amount": "0.00"
+    }
+  ]
+}

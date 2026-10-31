@@ -1,0 +1,47 @@
+{
+  "algorithm": "categorical_naive_bayes",
+  "target": "invoice_status",
+  "as_of_date": "2026-10-31",
+  "training_rows": 4,
+  "class_counts": {
+    "paid": 1,
+    "unpaid": 2,
+    "overdue": 1
+  },
+  "feature_domains": {
+    "amount_band": [
+      "small",
+      "medium",
+      "large"
+    ],
+    "due_timing": [
+      "future",
+      "overdue_1_30_days",
+      "overdue_31_plus_days"
+    ]
+  },
+  "feature_counts": {
+    "amount_band": {
+      "medium": {
+        "paid": 1,
+        "unpaid": 1
+      },
+      "small": {
+        "unpaid": 1
+      },
+      "large": {
+        "overdue": 1
+      }
+    },
+    "due_timing": {
+      "overdue_1_30_days": {
+        "paid": 1,
+        "unpaid": 1,
+        "overdue": 1
+      },
+      "future": {
+        "unpaid": 1
+      }
+    }
+  }
+}

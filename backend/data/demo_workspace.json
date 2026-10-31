@@ -1,0 +1,35 @@
+{
+  "customers": [
+    {"name": "Aarav Sharma", "email": "aarav.sharma@example.com", "company": "Northstar Labs"},
+    {"name": "Priya Patel", "email": "priya.patel@example.com", "company": "Cedar & Co"},
+    {"name": "Ishaan Mehta", "email": "ishaan.mehta@example.com", "company": "Orbit Systems"},
+    {"name": "Ananya Rao", "email": "ananya.rao@example.com", "company": "Bluepeak Studio"},
+    {"name": "Kabir Singh", "email": "kabir.singh@example.com", "company": "Fieldnote Works"}
+  ],
+  "product": {"name": "SubscriptIQ Business Suite", "product_type": "software"},
+  "plans": [
+    {"name": "Starter Monthly", "price": "499.00"},
+    {"name": "Growth Monthly", "price": "1499.00"},
+    {"name": "Business Monthly", "price": "1999.00"},
+    {"name": "Enterprise Monthly", "price": "2499.00"},
+    {"name": "Support Monthly", "price": "999.00"}
+  ],
+  "subscriptions": [
+    {"customer_id": 1, "plan_id": 2, "start_date": "2026-10-01", "next_billing_date": "2026-11-01", "status": "active", "auto_renew": true},
+    {"customer_id": 2, "plan_id": 1, "start_date": "2026-10-10", "next_billing_date": "2026-11-10", "status": "active", "auto_renew": true},
+    {"customer_id": 3, "plan_id": 4, "start_date": "2026-09-15", "next_billing_date": "2026-11-15", "status": "active", "auto_renew": true},
+    {"customer_id": 4, "plan_id": 3, "start_date": "2026-07-01", "next_billing_date": "2026-08-01", "status": "paused", "auto_renew": false},
+    {"customer_id": 5, "plan_id": 5, "start_date": "2026-08-01", "next_billing_date": "2026-09-01", "status": "closed", "auto_renew": false}
+  ],
+  "invoices": [
+    {"subscription_id": 1, "number": "INV-2026-001", "billing_period_start": "2026-10-01", "invoice_date": "2026-10-01", "due_date": "2026-10-08", "subtotal": "1499.00", "tax": "269.82", "total": "1768.82", "paid_amount": "1768.82", "status": "paid"},
+    {"subscription_id": 2, "number": "INV-2026-002", "billing_period_start": "2026-10-10", "invoice_date": "2026-10-10", "due_date": "2026-10-17", "subtotal": "499.00", "tax": "89.82", "total": "588.82", "paid_amount": "300.00", "status": "partially_paid"},
+    {"subscription_id": 3, "number": "INV-2026-003", "billing_period_start": "2026-10-15", "invoice_date": "2026-10-15", "due_date": "2026-10-22", "subtotal": "2499.00", "tax": "449.82", "total": "2948.82", "paid_amount": "1000.00", "status": "overdue"},
+    {"subscription_id": 1, "number": "INV-2026-004", "billing_period_start": "2026-11-01", "invoice_date": "2026-11-01", "due_date": "2026-11-08", "subtotal": "1499.00", "tax": "269.82", "total": "1768.82", "paid_amount": "0.00", "status": "confirmed"}
+  ],
+  "payments": [
+    {"invoice_id": 1, "reference": "PAY-DEMO-001", "amount": "1768.82", "method": "upi", "paid_at": "2026-10-03T10:00:00+00:00"},
+    {"invoice_id": 2, "reference": "PAY-DEMO-002", "amount": "300.00", "method": "card", "paid_at": "2026-10-15T10:00:00+00:00"},
+    {"invoice_id": 3, "reference": "PAY-DEMO-003", "amount": "1000.00", "method": "bank_transfer", "paid_at": "2026-10-20T10:00:00+00:00"}
+  ]
+}

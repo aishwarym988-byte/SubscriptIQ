@@ -5,6 +5,7 @@ from getpass import getpass
 from sqlalchemy import select
 
 from app.core.security import hash_password
+from app.demo_data import seed_demo_data
 from app.db.session import SessionLocal
 from app.models import User
 
@@ -30,7 +31,22 @@ def create_admin() -> None:
     print("Admin account created.")
 
 
+def seed_demo() -> None:
+    with SessionLocal() as db:
+        try:
+            counts = seed_demo_data(db)
+        except ValueError as exc:
+            raise SystemExit(str(exc)) from exc
+    print("Demo workspace data created:")
+    for entity, count in counts.items():
+        print(f"  {entity}: {count}")
+
+
 if __name__ == "__main__":
-    if len(sys.argv) != 2 or sys.argv[1] != "create-admin":
-        raise SystemExit("Usage: python -m app.cli create-admin")
-    create_admin()
+    if len(sys.argv) != 2:
+        raise SystemExit("Usage: python -m app.cli create-admin|seed-demo")
+    commands = {"create-admin": create_admin, "seed-demo": seed_demo}
+    command = commands.get(sys.argv[1])
+    if command is None:
+        raise SystemExit("Usage: python -m app.cli create-admin|seed-demo")
+    command()

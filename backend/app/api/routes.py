@@ -1,4 +1,5 @@
-from datetime import date, datetime, timezone
+import json
+from datetime import date, datetime, time, timedelta, timezone
 from decimal import Decimal
 from uuid import uuid4
 
@@ -26,6 +27,7 @@ from app.schemas import (
     CustomerRead,
     CustomerUpdate,
     InvoiceRead,
+    InvoiceStatusPredictionRequest,
     LoginRequest,
     PaymentCreate,
     PaymentRead,
@@ -43,6 +45,7 @@ from app.schemas import (
     UserRead,
 )
 from app.services.billing import add_interval, create_invoice_for_cycle, generate_due_invoices
+from app.train_model import DEFAULT_MODEL, predict, train_from_file
 
 router = APIRouter()
 
@@ -423,6 +426,44 @@ def run_billing(db: Session = Depends(get_db), admin: User = Depends(require_adm
     return result
 
 
+@router.post("/model/train", status_code=status.HTTP_200_OK)
+def train_invoice_status_model(admin: User = Depends(require_admin)):
+    model, dataset = train_from_file()
+    return {
+        "algorithm": model["algorithm"],
+        "target": model["target"],
+        "as_of_date": model["as_of_date"],
+        "training_rows": model["training_rows"],
+        "class_counts": model["class_counts"],
+        "invoices": [
+            {
+                "id": invoice["id"],
+                "due_date": invoice["due_date"],
+                "total": invoice["total"],
+                "status": invoice["status"],
+            }
+            for invoice in dataset["invoices"]
+        ],
+        "note": "Demo only: four rows are not enough to validate real-world predictions.",
+    }
+
+
+@router.post("/model/predict")
+def predict_invoice_status(payload: InvoiceStatusPredictionRequest, admin: User = Depends(require_admin)):
+    try:
+        with DEFAULT_MODEL.open(encoding="utf-8") as model_file:
+            model = json.load(model_file)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=409, detail="Train the invoice model before requesting a prediction") from exc
+    except json.JSONDecodeError as exc:
+        raise HTTPException(status_code=500, detail="The saved invoice model is invalid") from exc
+
+    return {
+        **predict(model, {"total": str(payload.total), "due_date": payload.due_date.isoformat()}),
+        "note": "Demo prediction only; this model was trained on four invoices and is not reliable for billing decisions.",
+    }
+
+
 @router.get("/dashboard")
 def dashboard(db: Session = Depends(get_db), user: User = Depends(require_staff)):
     today = date.today()
@@ -483,8 +524,8 @@ def revenue_report(
             func.sum(Payment.amount).label("revenue"),
         )
         .where(
-            func.date(Payment.paid_at) >= start_date.isoformat(),
-            func.date(Payment.paid_at) <= end_date.isoformat(),
+            Payment.paid_at >= datetime.combine(start_date, time.min, tzinfo=timezone.utc),
+            Payment.paid_at < datetime.combine(end_date + timedelta(days=1), time.min, tzinfo=timezone.utc),
         )
         .group_by("month")
         .order_by("month")
