@@ -36,10 +36,10 @@ Enter an email, name, and a password longer than 8 characters that includes uppe
 In the backend terminal:
 
 ```powershell
-python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 16453
 ```
 
-API docs: `http://127.0.0.1:8000/docs`. Health endpoints: `/health` and `/api/v1/health`.
+API docs: `http://127.0.0.1:16453/docs`. Health endpoints: `/health` and `/api/v1/health`.
 
 ### 4. Start the website
 
@@ -51,7 +51,7 @@ npm install
 npm run dev
 ```
 
-Open the URL Vite prints (usually `http://localhost:5173`). The frontend calls `http://127.0.0.1:8000/api/v1` by default. To use another API address, set `VITE_API_URL` in `frontend/.env.local` (for example `VITE_API_URL=http://127.0.0.1:16453/api/v1`).
+Open the URL Vite prints (usually `http://localhost:5173`). The frontend calls `http://127.0.0.1:16453/api/v1` by default, matching the API docs and frontend `.env.example`. To use another API address, set `VITE_API_URL` in `frontend/.env.local`.
 
 ## Core workflows
 
